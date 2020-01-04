@@ -3,6 +3,12 @@ export default function(data) {
     title: {
       text: "Revenue Per Service By Month"
     },
+    // subtitle: {
+    //   text: ""
+    // },
+    data: {
+      csv: data
+    },
     yAxis: {
       title: {
         text: "Revenue (USD)"
@@ -16,13 +22,10 @@ export default function(data) {
     },
     plotOptions: {
       series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: 2010
+        pointStart: 2019
       }
     },
-    series: data,
+    // series: data,
     responsive: {
       rules: [
         {

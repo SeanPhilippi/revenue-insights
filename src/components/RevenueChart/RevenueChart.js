@@ -8,7 +8,7 @@ ReactHighcharts.Highcharts.setOptions(revenueChartTheme);
 
 class RevenueChart extends PureComponent {
   state = {
-    data: {}
+    data: []
   }
 
   componentDidMount = async () => {
