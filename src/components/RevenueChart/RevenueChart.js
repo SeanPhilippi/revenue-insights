@@ -3,6 +3,7 @@ import ReactHighcharts from 'react-highcharts';
 import revenueChartTheme from './revenueChartTheme.js';
 import revenueChartConfig from './revenueChartConfig.js';
 import fetchCSV from '../fetchCSV';
+import ChartSelect from './ChartSelect';
 
 ReactHighcharts.Highcharts.setOptions(revenueChartTheme);
 
@@ -19,7 +20,10 @@ class RevenueChart extends PureComponent {
 
   render() {
     return (
-      <ReactHighcharts config={ revenueChartConfig(this.state.data) }/>
+      <>
+        <ChartSelect className=""/>
+        <ReactHighcharts config={ revenueChartConfig(this.state.data) }/>
+      </>
     )
   }
 };

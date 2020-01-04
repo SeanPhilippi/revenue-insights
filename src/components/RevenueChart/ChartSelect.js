@@ -5,15 +5,25 @@ class ChartSelect extends PureComponent {
     currentChart: ''
   }
 
+  handleChange = ({
+    target: {
+      value
+    }
+  }) => {
+    this.setState({ currentChart: value });
+  }
+
   render() {
     return (
-      <div>
-        <button>1m</button>
-        <button>6m</button>
-        <button>YTD</button>
-        <button>1y</button>
-        <button>all</button>
+      <div className="float-left">
+        <button value='1m' onClick={ this.handleChange }>1m</button>
+        <button value='6m' onClick={ this.handleChange }>6m</button>
+        <button value='ytd' onClick={ this.handleChange }>YTD</button>
+        <button value='1y' onClick={ this.handleChange }>1y</button>
+        <button value='all' onClick={ this.handleChange }>all</button>
       </div>
     )
   }
-}
+};
+
+export default ChartSelect;

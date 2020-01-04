@@ -1,6 +1,7 @@
 export default function(data) {
   return {
     title: {
+      align: "left",
       text: "Revenue Per Service By Month"
     },
     // subtitle: {
@@ -21,6 +22,7 @@ export default function(data) {
       verticalAlign: "middle"
     },
     plotOptions: {
+      type: 'histogram',
       series: {
         pointStart: 2019
       }
