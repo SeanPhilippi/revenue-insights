@@ -1,14 +1,11 @@
 export default function(data) {
   return {
     title: {
-      text: ""
+      text: "Revenue Per Service By Month"
     },
-    // subtitle: {
-    //   text: ""
-    // },
     yAxis: {
       title: {
-        text: "Price"
+        text: "Revenue (USD)"
       }
     },
     xAxis: { type: 'datetime' },
