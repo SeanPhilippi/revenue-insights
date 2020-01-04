@@ -1,7 +1,14 @@
 export default function(data) {
   return {
     title: {
+      align: "left",
       text: "Revenue Per Service By Month"
+    },
+    // subtitle: {
+    //   text: ""
+    // },
+    data: {
+      csv: data
     },
     yAxis: {
       title: {
@@ -15,14 +22,12 @@ export default function(data) {
       verticalAlign: "middle"
     },
     plotOptions: {
+      type: 'histogram',
       series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: 2010
+        pointStart: 2019
       }
     },
-    series: data,
+    // series: data,
     responsive: {
       rules: [
         {
