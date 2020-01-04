@@ -1,4 +1,4 @@
-import Papa from 'papaparse';
+// import Papa from 'papaparse';
 
 const fetchCSV = () => {
   return fetch('insights.csv')
@@ -8,13 +8,13 @@ const fetchCSV = () => {
 
       return reader.read()
         .then(res => decoder.decode(res.value));
-    })
+    });
 }
 
 const getCSVData = async () => {
   const csvData = await fetchCSV();
 
-  return Papa.parse(csvData);
+  return csvData;
 }
 
 export default function() {

@@ -6,8 +6,7 @@ export const AppContext = createContext();
 class Provider extends PureComponent {
   componentDidMount = async () => {
     const csvData = await fetchCSV();
-    this.setState({ data: csvData.data });
-    console.log('data', this.state.data)
+    this.setState({ data: csvData });
   }
 
   handleChartSelect = ({
@@ -15,7 +14,6 @@ class Provider extends PureComponent {
       value
     }
   }) => {
-    console.log('value', value)
     this.setState({ currentChart: value });
   }
 

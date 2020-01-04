@@ -4,11 +4,13 @@ export default function(data) {
       align: "left",
       text: "Revenue Per Service By Month"
     },
-    // subtitle: {
-    //   text: ""
-    // },
     data: {
-      csv: data
+      csv: data,
+      startRow: 1,
+      endRow: 87,
+      startColumn: 0,
+      endColumn: 8,
+      firstRowAsNames: true
     },
     yAxis: {
       title: {
@@ -22,12 +24,25 @@ export default function(data) {
       verticalAlign: "middle"
     },
     plotOptions: {
-      type: 'histogram',
-      series: {
-        pointStart: 2019
+      histogram: {
+
       }
     },
-    // series: data,
+    series: [
+      {
+        // name: 'Data',
+        type: 'histogram',
+        color: '#c4392d',
+        borderColor: 'white',
+        negativeColor: '#5679c4',
+        fillOpacity: 0.5,
+        // data: data,
+        id: 's1',
+        marker: {
+          radius: 1.5
+        }
+      }
+    ],
     responsive: {
       rules: [
         {
