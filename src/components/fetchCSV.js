@@ -13,7 +13,6 @@ const fetchCSV = () => {
 
 const getCSVData = async () => {
   const csvData = await fetchCSV();
-
   return csvData;
 }
 

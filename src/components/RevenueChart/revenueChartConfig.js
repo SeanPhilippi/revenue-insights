@@ -25,19 +25,18 @@ export default function(data) {
     },
     plotOptions: {
       histogram: {
-
+        // pointStart:
       }
     },
     series: [
       {
-        // name: 'Data',
         type: 'histogram',
         color: '#c4392d',
         borderColor: 'white',
         negativeColor: '#5679c4',
         fillOpacity: 0.5,
         // data: data,
-        id: 's1',
+        // id: 's1',
         marker: {
           radius: 1.5
         }

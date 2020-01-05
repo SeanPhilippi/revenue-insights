@@ -19,7 +19,7 @@ class Provider extends PureComponent {
 
   state = {
     currentChart: 'ytd',
-    data: [],
+    data: null,
     handleChartSelect: this.handleChartSelect
   }
 
