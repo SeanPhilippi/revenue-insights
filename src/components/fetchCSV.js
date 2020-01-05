@@ -41,7 +41,9 @@ const getCSVData = async () => {
     }
   })
   console.log('series', series)
-  const seriesByDate = _.groupBy(series, 'date');
+  const seriesByDate = _.groupBy(seriesData, (data) => {
+    return data[9]
+  });
   console.log('seriesByDate', seriesByDate)
   return series;
 }
