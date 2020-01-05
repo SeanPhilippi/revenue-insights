@@ -3,15 +3,10 @@ import { AppContext } from '../Provider';
 import ChartSelect from './ChartSelect';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import highchartsHistogram from 'highcharts/modules/histogram-bellcurve';
-import highchartsData from 'highcharts/modules/data';
 import revenueChartTheme from './revenueChartTheme.js';
 import revenueChartConfig from './revenueChartConfig.js';
 
-highchartsHistogram(Highcharts);
-highchartsData(Highcharts);
 Highcharts.setOptions(revenueChartTheme);
-
 
 const RevenueChart = () => (
   <AppContext.Consumer>

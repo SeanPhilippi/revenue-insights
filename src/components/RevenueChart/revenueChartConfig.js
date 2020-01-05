@@ -8,7 +8,21 @@ export default function(data, categories) {
       text: "Revenue Per Service By Month"
     },
     xAxis: {
-      type: 'datetime'
+      // type: 'datetime',
+      // categories: [
+      //   'Jan',
+      //   'Feb',
+      //   'Mar',
+      //   'Apr',
+      //   'May',
+      //   'Jun',
+      //   'Jul',
+      //   'Aug',
+      //   'Sep',
+      //   'Oct',
+      //   'Nov',
+      //   'Dec'
+      // ],
     },
     legend: {
       layout: "vertical",

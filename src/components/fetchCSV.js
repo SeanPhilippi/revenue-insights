@@ -1,4 +1,6 @@
 import Papa from 'papaparse';
+import _ from 'underscore';
+import moment from 'moment';
 
 const fetchCSV = () => {
   return fetch('insights.csv')
@@ -20,19 +22,18 @@ const getCSVData = async () => {
   console.log('seriesNames', seriesNames)
   const seriesData = parsedData.slice(1, parsedData.length - 1)
   console.log('seriesData', seriesData)
-  // group arrays in 2d array based on category, so values can be added up
-  // loop through 2d array and check 11 index of each array
-  // for each array, loop through again and find matches at index 11
-  // if match, += data[0] to match[0] and repeat through data[8]
+  const seriesDates = seriesData.map((data, idx) => data[9].split(' ')[0])
+  console.log('seriesDates', seriesDates)
 
-  // * create array of objects with name prop set to name and data prop set to array of
+  // * create array of objects with name prop set to series name and data prop set to array of
   // * numbers for each series/category
   const series = seriesNames.map((name, seriesIndex) => {
     return {
       // series name
       name,
       // match series in each data point (row) using index and make array for Highcharts data
-      data: seriesData.map(row => Number(row[seriesIndex]))
+      data: seriesData.map(row => Number(row[seriesIndex])),
+      date: moment(seriesData[seriesIndex][9].split(' ')[0], 'YYYY-MM-DD').format('MMM DD YYYY')
     }
   })
   console.log('series', series)
