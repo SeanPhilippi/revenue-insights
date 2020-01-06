@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import _ from 'underscore';
+import _ from 'lodash';
 import moment from 'moment';
 
 const fetchCSV = () => {
@@ -13,39 +13,45 @@ const fetchCSV = () => {
     });
 }
 
+const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
+  const groupedData = _.chain(data)
+    .groupBy(row => {
+      return moment(row[dateColIdx].split(' ')[0], 'YYYY-MM-DD').format(dateFormat)})
+    .map((rows, bin) => {
+      const revenue = _.sum(rows.map(row => Number(row[valueColIdx])));
+      return {
+        bin,
+        revenue
+      }
+    }).value();
+  return groupedData;
+}
+
+
 const getCSVData = async () => {
   const csvData = await fetchCSV();
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
   console.log('parsedData', parsedData)
-  const seriesNames = parsedData[0].slice(0, 9)
-  console.log('seriesNames', seriesNames)
-  const seriesData = parsedData.slice(1, parsedData.length - 1)
-  console.log('seriesData', seriesData)
-  // map over seriesData and format dates for later grouping with groupBy()
-  seriesData.forEach(data => data[9] = moment(data[9].split(' ')[0], 'YYYY-MM-DD').format('MMM DD YYYY'));
-  console.log('formattedSeriesData', seriesData)
+  const seriesNames = parsedData[0].slice(0, 9);
+  const seriesData = parsedData.slice(1, parsedData.length - 1);
+  const seriesObjs = seriesNames.map((name, i) => ({
+    name,
+    data: createSeries(seriesData, 9, i, 'MMM DD YYYY')
+  }));
+  console.log('seriesObjs', seriesObjs)
 
+  const series = seriesObjs.map(obj => ({
+    name: obj.name,
+    data: obj.data.map(dataObj => dataObj.revenue)
+  }));
 
-  const seriesDates = seriesData.map((data, idx) => data[9].split(' ')[0])
-  console.log('seriesDates', seriesDates)
+  const dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
 
-  // * create array of objects with name prop set to series name and data prop set to array of
-  // * numbers for each series/category
-  const series = seriesNames.map((name, seriesIndex) => {
-    return {
-      // series name
-      name,
-      // match series in each data point (row) using index and make array for Highcharts data
-      data: seriesData.map(row => Number(row[seriesIndex]))
-    }
-  })
-  console.log('series', series)
-  const seriesByDate = _.groupBy(seriesData, (data) => {
-    return data[9]
+  return ({
+    series,
+    dates
   });
-  console.log('seriesByDate', seriesByDate)
-  return series;
 }
 
 export default function() {

@@ -1,4 +1,4 @@
-export default function(data, categories) {
+export default function(data) {
   return {
     chart: {
       type: 'column'
@@ -8,21 +8,7 @@ export default function(data, categories) {
       text: "Revenue Per Service By Month"
     },
     xAxis: {
-      // type: 'datetime',
-      // categories: [
-      //   'Jan',
-      //   'Feb',
-      //   'Mar',
-      //   'Apr',
-      //   'May',
-      //   'Jun',
-      //   'Jul',
-      //   'Aug',
-      //   'Sep',
-      //   'Oct',
-      //   'Nov',
-      //   'Dec'
-      // ],
+      categories: data.dates,
     },
     legend: {
       layout: "vertical",
@@ -51,7 +37,7 @@ export default function(data, categories) {
         shadow: false
       }
     },
-    series: data,
+    series: data.series,
     responsive: {
       rules: [
         {
