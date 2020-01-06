@@ -5,6 +5,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import revenueChartTheme from './revenueChartTheme.js';
 import revenueChartConfig from './revenueChartConfig.js';
+import './RevenueChart.css';
 
 Highcharts.setOptions(revenueChartTheme);
 
@@ -15,13 +16,13 @@ const RevenueChart = () => (
         if (!data) return <div>Loading...</div>
         console.log('data', data)
         return (
-          <>
+          <div className="revenue-chart">
             <ChartSelect className=""/>
             <HighchartsReact
               highcharts={ Highcharts }
               options={ revenueChartConfig(data) }
             />
-          </>
+          </div>
         )
       }
     }
