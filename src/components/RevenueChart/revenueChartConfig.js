@@ -1,33 +1,43 @@
 export default function(data) {
   return {
+    chart: {
+      type: 'column'
+    },
     title: {
       align: "left",
       text: "Revenue Per Service By Month"
     },
-    // subtitle: {
-    //   text: ""
-    // },
-    data: {
-      csv: data
+    xAxis: {
+      categories: data.dates,
     },
-    yAxis: {
-      title: {
-        text: "Revenue (USD)"
-      }
-    },
-    xAxis: { type: 'datetime' },
     legend: {
       layout: "vertical",
       align: "right",
       verticalAlign: "middle"
     },
-    plotOptions: {
-      type: 'histogram',
-      series: {
-        pointStart: 2019
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Revenue (USD)'
       }
     },
-    // series: data,
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+      footerFormat: '</table>',
+      shared: false,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 1,
+        borderWidth: 0,
+        groupPadding: 0,
+        shadow: false
+      }
+    },
+    series: data.series,
     responsive: {
       rules: [
         {

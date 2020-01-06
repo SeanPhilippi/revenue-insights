@@ -1,33 +1,32 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { AppContext } from '../Provider';
-import ReactHighcharts from 'react-highcharts';
+import ChartSelect from './ChartSelect';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import revenueChartTheme from './revenueChartTheme.js';
 import revenueChartConfig from './revenueChartConfig.js';
-import ChartSelect from './ChartSelect';
 
-ReactHighcharts.Highcharts.setOptions(revenueChartTheme);
+Highcharts.setOptions(revenueChartTheme);
 
-class RevenueChart extends PureComponent {
-  state = {
-    data: []
-  }
+const RevenueChart = () => (
+  <AppContext.Consumer>
+    {
+      ({ data }) => {
+        if (!data) return <div>Loading...</div>
+        console.log('data', data)
+        return (
+          <>
+            <ChartSelect className=""/>
+            <HighchartsReact
+              highcharts={ Highcharts }
+              options={ revenueChartConfig(data) }
+            />
+          </>
+        )
+      }
+    }
+  </AppContext.Consumer>
+);
 
-
-
-  render() {
-    return (
-      <AppContext.Consumer>
-        {
-          ({ data }) => (
-            <>
-              <ChartSelect className=""/>
-              <ReactHighcharts config={ revenueChartConfig(data) }/>
-            </>
-          )
-        }
-      </AppContext.Consumer>
-    )
-  }
-};
 
 export default RevenueChart;
