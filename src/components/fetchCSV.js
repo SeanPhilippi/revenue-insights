@@ -28,33 +28,18 @@ const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
 }
 
 const getCSVData = async (currentChart) => {
-  // let dateColIdx = 9;
-  // let dateFormat = 'MMM DD YYYY';
-  // switch (currentChart) {
-  //   case '1m':
-  //     dateColIdx =
-  //   default:
-  //     dateColIdx = 9;
-  //     dateFormat = 'MMM DD YYYY';
-  // }
   const csvData = await fetchCSV();
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
-  console.log('parsedData', parsedData)
   const seriesNames = parsedData[0].slice(0, 9);
   const seriesData = parsedData.slice(1, parsedData.length - 1);
   const seriesObjs = seriesNames.map((name, i) => ({
     name,
     data: createSeries(seriesData, 9, i, 'MMM DD YYYY')
   }));
-  console.log('seriesObjs', seriesObjs)
-
-  const series = seriesObjs.map(obj => ({
-    name: obj.name,
-    data: obj.data.map(dataObj => dataObj.revenue)
-  }));
 
   let dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
+  const ORIGINAL_DATES_LENGTH = dates.length;
   const MILLISECONDS_IN_MONTH = 2592000000;
   const MILLISECONDS_IN_6_MONTHS = 15552000000;
   const MILLISECONDS_IN_YEAR = 31556952000;
@@ -68,6 +53,7 @@ const getCSVData = async (currentChart) => {
     });
   }
 
+  // filter dates array
   switch (currentChart) {
     case '1m':
       dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH)
@@ -77,15 +63,27 @@ const getCSVData = async (currentChart) => {
       break;
     case 'ytd':
       const currentYear = dates[dates.length - 1].slice(-5);
-      console.log('currentYear', currentYear)
       dates = dates.filter(date => date.includes(currentYear))
-      console.log('ytd dates', dates)
       break;
     case '1y':
       dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR)
       break;
     default:
       break;
+  }
+
+  // filter series data array based on number of dates
+  let series;
+  if (dates.length < ORIGINAL_DATES_LENGTH) {
+    series = seriesObjs.map(obj => ({
+      name: obj.name,
+      data: obj.data.slice(-dates.length).map(dataObj => dataObj.revenue)
+    }));
+  } else {
+    series = seriesObjs.map(obj => ({
+      name: obj.name,
+      data: obj.data.map(dataObj => dataObj.revenue)
+    }));
   }
 
   return ({
