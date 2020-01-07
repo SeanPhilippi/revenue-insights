@@ -1,11 +1,32 @@
 export default function(data, currentChart) {
   return {
     chart: {
-      type: 'column'
+      type: 'column',
+      zoomType: 'x',
+      resetZoomButton: {
+        theme: {
+          fill: 'white',
+          stroke: 'black',
+          r: 4,
+          states: {
+            hover: {
+              fill: 'black',
+              style: {
+                color: 'white',
+              }
+            }
+          }
+        }
+      },
+      panning: true,
+      panKey: 'shift'
     },
     title: {
       align: 'left',
       text: 'Revenue Per Service By Month'
+    },
+    subtitle: {
+      text: 'Click and drag to zoom in. Hold down shift key while dragging to pan.'
     },
     xAxis: {
       categories: data.dates,
@@ -17,6 +38,7 @@ export default function(data, currentChart) {
     },
     yAxis: {
       min: 0,
+      className: 'y-axis',
       title: {
         text: 'Revenue (USD)'
       }
@@ -35,7 +57,7 @@ export default function(data, currentChart) {
       column: {
         pointPadding: 0,
         borderWidth: 0,
-        groupPadding: .1,
+        groupPadding: currentChart === '1m' ? .05 : .07,
         shadow: false
       }
     },
