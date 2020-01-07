@@ -1,19 +1,19 @@
-export default function(data) {
+export default function(data, currentChart) {
   return {
     chart: {
       type: 'column'
     },
     title: {
-      align: "left",
-      text: "Revenue Per Service By Month"
+      align: 'left',
+      text: 'Revenue Per Service By Month'
     },
     xAxis: {
       categories: data.dates,
     },
     legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle"
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle'
     },
     yAxis: {
       min: 0,
@@ -46,9 +46,9 @@ export default function(data) {
           },
           chartOptions: {
             legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom"
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom'
             }
           }
         }

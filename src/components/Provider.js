@@ -9,16 +9,19 @@ class Provider extends PureComponent {
     this.setState({ data: csvData });
   }
 
-  handleChartSelect = ({
+  handleChartSelect = async ({
     target: {
       value
     }
   }) => {
     this.setState({ currentChart: value });
+    // refetch data, call fetchCSV with new currentChart value
+    const newCsvData = await fetchCSV(value);
+    this.setState({ data: newCsvData });
   }
 
   state = {
-    currentChart: 'ytd',
+    currentChart: '1m',
     data: null,
     handleChartSelect: this.handleChartSelect
   }

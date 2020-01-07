@@ -6,11 +6,36 @@ const ChartSelect = () => (
     {
       ({ handleChartSelect }) => (
         <div className="d-flex justify-content-between chart-select">
-          <button value='1m' onClick={ handleChartSelect }>1m</button>
-          <button value='6m' onClick={ handleChartSelect }>6m</button>
-          <button value='ytd' onClick={ handleChartSelect }>YTD</button>
-          <button value='1y' onClick={ handleChartSelect }>1y</button>
-          <button value='all' onClick={ handleChartSelect }>all</button>
+          <button
+            value='1m'
+            onClick={ handleChartSelect }
+          >
+            1m
+          </button>
+          <button
+            value='6m'
+            onClick={ handleChartSelect }
+          >
+            6m
+          </button>
+          <button
+            value='ytd'
+            onClick={ handleChartSelect }
+          >
+            YTD
+          </button>
+          <button
+            value='1y'
+            onClick={ handleChartSelect }
+          >
+            1y
+          </button>
+          <button
+            value='all'
+            onClick={ handleChartSelect }
+          >
+            All
+          </button>
         </div>
       )
     }

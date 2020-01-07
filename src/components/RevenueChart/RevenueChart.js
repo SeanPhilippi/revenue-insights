@@ -12,7 +12,7 @@ Highcharts.setOptions(revenueChartTheme);
 const RevenueChart = () => (
   <AppContext.Consumer>
     {
-      ({ data }) => {
+      ({ data, currentChart }) => {
         if (!data) return <div>Loading...</div>
         console.log('data', data)
         return (
@@ -20,7 +20,7 @@ const RevenueChart = () => (
             <ChartSelect className=""/>
             <HighchartsReact
               highcharts={ Highcharts }
-              options={ revenueChartConfig(data) }
+              options={ revenueChartConfig(data, currentChart) }
             />
           </div>
         )
