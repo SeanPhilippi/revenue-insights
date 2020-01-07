@@ -5,7 +5,7 @@ const ChartSelect = () => (
   <AppContext.Consumer>
     {
       ({ handleChartSelect }) => (
-        <div className="d-flex justify-content-between chart-select">
+        <div className="d-flex justify-content-between chart-select mb-2">
           <button
             value='1m'
             onClick={ handleChartSelect }

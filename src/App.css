@@ -1,7 +1,45 @@
+html {
+  background-color: #010e2c;
+}
+
 .App {
+  background-color: #010e2c;
   text-align: center;
+  height: 90vh;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+/* removing focus border for inputs */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+button {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  border-radius: .2rem;
+  border-width: .1rem;
+  border-color: white;
+  height: 1.5rem;
+  line-height: 1.3rem;
+  font-size: .8rem;
+  margin: .2rem;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+button:active:not(.edit-btn) {
+  position: relative;
+  top: .05rem;
 }
