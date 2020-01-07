@@ -14,15 +14,26 @@ const fetchCSV = () => {
 }
 
 const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
+  // chain allows you to chain lodash array methods on a returned collection so you don't have to
+  // pass the collection to each lodash method on a seprate line
   const groupedData = _.chain(data)
+    // groupBy can take a callback to be executed on each item, the return values serve as
+    // the keys the items will be grouped in arrays and assigned to
     .groupBy(row => {
+      // console.log('thing', row[dateColIdx].split(' ')[0])
+      // each row is a data array from the parsed csv
+      // grab the date with format YYYY-MM-DD and reformat into given dateFormat
       return moment(row[dateColIdx].split(' ')[0], 'YYYY-MM-DD').format(dateFormat)})
-    .map((rows, bin) => {
-      const revenue = _.sum(rows.map(row => Number(row[valueColIdx])));
+    // map over the groupBy object, each group is a data array and each bin is a groupBy date key
+    .map((group, bin) => {
+      // console.log('group', group)
+      // console.log('bin', bin)
+      // reduce the right number at the right index of each data array row into a single sum
+      const revenueSum = _.sum(group.map(row => Number(row[valueColIdx])));
       return {
         bin,
-        revenue
-      }
+        revenue: revenueSum
+      } // return the unwrapped lodash chain value
     }).value();
   return groupedData;
 }
@@ -35,10 +46,11 @@ const getCSVData = async (currentChart) => {
   const seriesData = parsedData.slice(1, parsedData.length - 1);
   const seriesObjs = seriesNames.map((name, i) => ({
     name,
-    data: createSeries(seriesData, 9, i, 'MMM DD YYYY')
+    data: createSeries(seriesData, 9, i, 'MMM YYYY')
   }));
 
   let dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
+  console.log('original dates', dates)
   const ORIGINAL_DATES_LENGTH = dates.length;
   const MILLISECONDS_IN_MONTH = 2592000000;
   const MILLISECONDS_IN_6_MONTHS = 15552000000;
@@ -46,9 +58,15 @@ const getCSVData = async (currentChart) => {
   const currentDate = (new Date()).getTime();
 
   const currentChartFilter = (dates, range) => {
+    console.log('currentChartFilter dates', dates)
+    // need full dates back for this to work
     const furthestLimit = currentDate - range;
-    return dates.filter(date => {
+    console.log('currentDate', currentDate)
+    console.log('furthestLimit', furthestLimit)
+    return dates.filter((date, i) => {
+      console.log('lfkslje date', date)
       const ms = (new Date(date)).getTime();
+      console.log('idx', i, 'date ms', ms)
       return ms < currentDate && ms > furthestLimit;
     });
   }
@@ -56,17 +74,18 @@ const getCSVData = async (currentChart) => {
   // filter dates array
   switch (currentChart) {
     case '1m':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH)
+      dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH);
+      console.log('1m dates', dates)
       break;
     case '6m':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_6_MONTHS)
+      dates = currentChartFilter(dates, MILLISECONDS_IN_6_MONTHS);
       break;
     case 'ytd':
       const currentYear = dates[dates.length - 1].slice(-5);
-      dates = dates.filter(date => date.includes(currentYear))
+      dates = dates.filter(date => date.includes(currentYear));
       break;
     case '1y':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR)
+      dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR);
       break;
     default:
       break;
