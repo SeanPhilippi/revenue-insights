@@ -53,29 +53,39 @@ const getCSVData = async (currentChart) => {
     name: obj.name,
     data: obj.data.map(dataObj => dataObj.revenue)
   }));
-  // ! filter dates based on currentChart value
-  // group by first 3 characters of each date string
+
   let dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
-  console.log('dates', dates)
-  if (currentChart === '1m') {
-    const month = dates[dates.length - 1].slice(0, 3);
-    dates = dates.filter(date => date.includes(month));
-    console.log('dates in if', dates)
-  } else if (currentChart === '6m') {
-    const months = dates.map(date => date.slice(0, 3));
-    const sixMonths = months.slice(-5);
-    dates = dates.filter(date => date.includes(sixMonths));
-  } else if (currentChart === 'ytd') {
-    const currentYear = dates[dates.length - 1].slice(-5);
-    console.log('currentYear', currentYear)
-    dates = dates.filter(date => date.includes(currentYear))
-    console.log('ytd dates', dates)
-  } else if (currentChart === '1y') {
-    const currentDate = moment().format('MMM DD YYYY');
-    console.log('currentDate', currentDate)
-    const furthestLimit = moment().subtract(12, 'months').format('MMM DD YYYY');
-    // const furthestLimit = currentDate.slice(0, -5) + ` ${Number(currentDate.slice(-5)) - 1}`;
-    console.log('furthestLimit', furthestLimit)
+  const MILLISECONDS_IN_MONTH = 2592000000;
+  const MILLISECONDS_IN_6_MONTHS = 15552000000;
+  const MILLISECONDS_IN_YEAR = 31556952000;
+  const currentDate = (new Date()).getTime();
+
+  const currentChartFilter = (dates, range) => {
+    const furthestLimit = currentDate - range;
+    return dates.filter(date => {
+      const ms = (new Date(date)).getTime();
+      return ms < currentDate && ms > furthestLimit;
+    });
+  }
+
+  switch (currentChart) {
+    case '1m':
+      dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH)
+      break;
+    case '6m':
+      dates = currentChartFilter(dates, MILLISECONDS_IN_6_MONTHS)
+      break;
+    case 'ytd':
+      const currentYear = dates[dates.length - 1].slice(-5);
+      console.log('currentYear', currentYear)
+      dates = dates.filter(date => date.includes(currentYear))
+      console.log('ytd dates', dates)
+      break;
+    case '1y':
+      dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR)
+      break;
+    default:
+      break;
   }
 
   return ({
