@@ -6,11 +6,3 @@
 .chart-select {
   width: 13rem;
 }
-
-button {
-  border-radius: .2rem;
-  height: 1.3rem;
-  line-height: 1.3rem;
-  font-size: .8rem;
-  margin: .2rem;
-}

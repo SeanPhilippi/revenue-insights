@@ -3,9 +3,9 @@ import Provider from './components/Provider';
 import RevenueChart from './components/RevenueChart/RevenueChart.js';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <div className="App d-flex align-items-center">
       <Provider>
         <RevenueChart />
       </Provider>
