@@ -27,6 +27,9 @@ export default {
       color: textBright
     }
   },
+  lang: {
+    thousandsSep: ','
+  },
   xAxis: {
     gridLineColor: "#707073",
     labels: {
@@ -105,9 +108,7 @@ export default {
     }
   },
   credits: {
-    style: {
-      color: textBright
-    }
+    enabled: false
   },
   labels: {
     style: {
