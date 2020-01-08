@@ -3,6 +3,7 @@ export default function(data, currentChart, dateFormat) {
   return {
     chart: {
       type: 'column',
+      height: 'inherit',
       zoomType: 'x',
       resetZoomButton: {
         theme: {

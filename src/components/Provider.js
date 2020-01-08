@@ -33,7 +33,7 @@ class Provider extends PureComponent {
   }
 
   state = {
-    currentChart: 'ytd',
+    currentChart: '6m',
     dateFormat: {
       name: 'MMM YYYY',
       value: 'months'

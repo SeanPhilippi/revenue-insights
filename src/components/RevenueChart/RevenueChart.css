@@ -1,6 +1,6 @@
-.revenue-chart {
-  margin: auto;
+.chart-container {
   width: 80%;
+  margin: auto;
 }
 
 .chart-select {

@@ -20,7 +20,7 @@ const RevenueChart = () => (
         if (!data) return <Loading />
         console.log('data', data)
         return (
-          <div className="revenue-chart">
+          <div className="chart-container">
             <ChartSelect />
             <DateFormatSelect />
             <HighchartsReact
