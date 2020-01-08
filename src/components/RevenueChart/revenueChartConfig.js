@@ -19,7 +19,12 @@ export default function(data, currentChart) {
         }
       },
       panning: true,
-      panKey: 'shift'
+      panKey: 'shift',
+    },
+    navigation: {
+      buttonOptions: {
+        symbolStroke: 'black'
+      }
     },
     title: {
       align: 'left',

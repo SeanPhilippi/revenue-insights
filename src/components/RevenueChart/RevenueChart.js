@@ -3,10 +3,12 @@ import { AppContext } from '../Provider';
 import ChartSelect from './ChartSelect';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import highchartsExporting from 'highcharts/modules/exporting';
 import revenueChartTheme from './revenueChartTheme.js';
 import revenueChartConfig from './revenueChartConfig.js';
 import './RevenueChart.css';
 
+highchartsExporting(Highcharts);
 Highcharts.setOptions(revenueChartTheme);
 
 const RevenueChart = () => (
