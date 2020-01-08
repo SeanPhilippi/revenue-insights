@@ -28,15 +28,19 @@ const getCSVData = async (currentChart) => {
   const filterSeriesData = (seriesData, numOfMonths) => {
     const currentDate = moment();
     const furthestDateBack = moment().subtract(numOfMonths, 'months');
-
     const filteredSeriesData = seriesData.filter(dataRow => {
       const momentDate =  moment(dataRow[9], 'YYYY-MM-DD');
-      return momentDate < currentDate && momentDate > furthestDateBack;
+      if (typeof numOfMonths === 'number') {
+        return momentDate < currentDate && momentDate > furthestDateBack;
+      } else {
+        const beginningOfYear = moment().startOf('year')
+        return momentDate >= beginningOfYear;
+      }
     })
     return filteredSeriesData;
   }
 
-  let filteredSeriesData;
+  let filteredSeriesData = seriesData;
   switch (currentChart) {
     case '1m':
       filteredSeriesData = filterSeriesData(seriesData, 1);
@@ -47,7 +51,8 @@ const getCSVData = async (currentChart) => {
       console.log('6m filteredSeriesData', filteredSeriesData)
       break;
     case 'ytd':
-
+      filteredSeriesData = filterSeriesData(seriesData, 'ytd');
+      console.log('ytd filteredSeriesData', filteredSeriesData);
       break;
     case '1y':
       filteredSeriesData = filterSeriesData(seriesData, 12);
