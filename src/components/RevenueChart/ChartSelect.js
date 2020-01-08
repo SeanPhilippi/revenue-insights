@@ -7,17 +7,22 @@ const ChartSelect = () => {
     <AppContext.Consumer>
       {
         ({ handleChartSelect, currentChart }) => (
-          <div className="d-flex justify-content-between chart-select mb-2">
-            {chartOptions.map(option => (
-                <button
-                  value={ option.toLowerCase() }
-                  className={ option.toLowerCase() === currentChart && 'active-chart'}
-                  onClick={ handleChartSelect }
-                >
-                  { option }
-                </button>
-              )
-            )}
+          <div className="chart-select">
+            <label className="text-white">
+              Date Range
+            </label>
+            <div className="d-flex justify-content-between mb-2">
+              {chartOptions.map(option => (
+                  <button
+                    value={ option.toLowerCase() }
+                    className={ option.toLowerCase() === currentChart && 'active-chart'}
+                    onClick={ handleChartSelect }
+                  >
+                    { option }
+                  </button>
+                )
+              )}
+            </div>
           </div>
         )
       }

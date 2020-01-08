@@ -7,6 +7,10 @@
   width: 13rem;
 }
 
+label {
+  font-size: .9rem;
+}
+
 .active-chart {
   background-color: black;
   color: white;
