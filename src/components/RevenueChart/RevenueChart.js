@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppContext } from '../Provider';
 import ChartSelect from './ChartSelect';
+import Loading from '../Loading';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import highchartsExporting from 'highcharts/modules/exporting';
@@ -15,7 +16,7 @@ const RevenueChart = () => (
   <AppContext.Consumer>
     {
       ({ data, currentChart }) => {
-        if (!data) return <div>Loading...</div>
+        if (!data) return <Loading />
         console.log('data', data)
         return (
           <div className="revenue-chart">
