@@ -17,7 +17,7 @@ const RevenueChart = () => (
         console.log('data', data)
         return (
           <div className="revenue-chart">
-            <ChartSelect className=""/>
+            <ChartSelect />
             <HighchartsReact
               highcharts={ Highcharts }
               options={ revenueChartConfig(data, currentChart) }

@@ -13,83 +13,88 @@ const fetchCSV = () => {
     });
 }
 
-const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
-  const groupedData = _.chain(data)
-    .groupBy(row => {
-      return moment(row[dateColIdx].split(' ')[0], 'YYYY-MM-DD').format(dateFormat)})
-    .map((rows, bin) => {
-      const revenue = _.sum(rows.map(row => Number(row[valueColIdx])));
-      return {
-        bin,
-        revenue
-      }
-    }).value();
-  return groupedData;
-}
-
 const getCSVData = async (currentChart) => {
   const csvData = await fetchCSV();
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
   const seriesNames = parsedData[0].slice(0, 9);
+  // array of arrays of data rows from parsed csv
   const seriesData = parsedData.slice(1, parsedData.length - 1);
-  const seriesObjs = seriesNames.map((name, i) => ({
-    name,
-    data: createSeries(seriesData, 9, i, 'MMM DD YYYY')
-  }));
 
-  let dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
-  const ORIGINAL_DATES_LENGTH = dates.length;
-  const MILLISECONDS_IN_MONTH = 2592000000;
-  const MILLISECONDS_IN_6_MONTHS = 15552000000;
-  const MILLISECONDS_IN_YEAR = 31556952000;
-  const currentDate = (new Date()).getTime();
-
-  const currentChartFilter = (dates, range) => {
-    const furthestLimit = currentDate - range;
-    return dates.filter(date => {
-      const ms = (new Date(date)).getTime();
-      return ms < currentDate && ms > furthestLimit;
-    });
+  // filter seriesData to go into createSeries
+  const filterSeriesData = (seriesData, numOfMonths) => {
+    const currentDate = moment();
+    const furthestDateBack = moment().subtract(numOfMonths, 'months');
+    const filteredSeriesData = seriesData.filter(dataRow => {
+      const momentDate =  moment(dataRow[9], 'YYYY-MM-DD');
+      if (typeof numOfMonths === 'number') {
+        return momentDate < currentDate && momentDate > furthestDateBack;
+      } else {
+        const beginningOfYear = moment().startOf('year')
+        return momentDate >= beginningOfYear;
+      }
+    })
+    return filteredSeriesData;
   }
 
-  // filter dates array
+  let filteredSeriesData = seriesData;
   switch (currentChart) {
     case '1m':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH)
+      filteredSeriesData = filterSeriesData(seriesData, 1);
       break;
     case '6m':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_6_MONTHS)
+      filteredSeriesData = filterSeriesData(seriesData, 6);
       break;
     case 'ytd':
-      const currentYear = dates[dates.length - 1].slice(-5);
-      dates = dates.filter(date => date.includes(currentYear))
+      filteredSeriesData = filterSeriesData(seriesData, 'ytd');
       break;
     case '1y':
-      dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR)
+      filteredSeriesData = filterSeriesData(seriesData, 12);
       break;
     default:
       break;
   }
 
-  // filter series data array based on number of dates
-  let series;
-  if (dates.length < ORIGINAL_DATES_LENGTH) {
-    series = seriesObjs.map(obj => ({
-      name: obj.name,
-      data: obj.data.slice(-dates.length).map(dataObj => dataObj.revenue)
-    }));
-  } else {
-    series = seriesObjs.map(obj => ({
-      name: obj.name,
-      data: obj.data.map(dataObj => dataObj.revenue)
-    }));
-  }
+  const seriesObjs = seriesNames.map((name, i) => ({
+    name,
+    data: createSeries(filteredSeriesData, 9, i, 'MMM YYYY')
+  }));
+
+  // grab dates from first series object bin names
+  const dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
+  // format series objectes for Highcharts.js
+  const series = seriesObjs.map(obj => ({
+    name: obj.name,
+    // create array of revenue numbers for date bins
+    data: obj.data.map(dataObj => dataObj.revenue)
+  }));
 
   return ({
     series,
     dates
   });
+}
+
+const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
+  // chain allows you to chain lodash array methods on a returned collection so you don't have to
+  // pass the collection to each lodash method on a seprate line
+  const groupedData = _.chain(data)
+    // groupBy can take a callback to be executed on each item, the return values serve as
+    // the keys the items will be grouped in arrays and assigned to
+    .groupBy(row => {
+      // each row is a data array from the parsed csv
+      // grab the date with format YYYY-MM-DD and reformat into given dateFormat
+      return moment(row[dateColIdx].split(' ')[0], 'YYYY-MM-DD').format(dateFormat)})
+    // map over the groupBy object, each group is a data array and each bin is a groupBy date key
+    .map((group, bin) => {
+      // reduce the right number at the right index of each data array row into a single sum
+      const revenueSum = _.sum(group.map(row => Number(row[valueColIdx])));
+      return {
+        bin,
+        revenue: revenueSum
+      } // return the unwrapped lodash chain value
+    }).value();
+  return groupedData;
 }
 
 export default function(currentChart) {
