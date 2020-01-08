@@ -13,7 +13,6 @@ const RevenueChart = () => (
   <AppContext.Consumer>
     {
       ({ data, currentChart }) => {
-        console.log('here')
         if (!data) return <div>Loading...</div>
         console.log('data', data)
         return (

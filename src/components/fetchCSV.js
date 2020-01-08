@@ -18,12 +18,9 @@ const getCSVData = async (currentChart) => {
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
   const seriesNames = parsedData[0].slice(0, 9);
+  // array of arrays of data rows from parsed csv
   const seriesData = parsedData.slice(1, parsedData.length - 1);
-  console.log('seriesData', seriesData) // array of arrays of data rows from parsed csv
-  // let dates = seriesData.map(dataRow => dataRow[9])
-  // console.log('dates', dates)
 
-  // ! use currentChart value to filter dates here, before grouping
   // filter seriesData to go into createSeries
   const filterSeriesData = (seriesData, numOfMonths) => {
     const currentDate = moment();
@@ -44,19 +41,15 @@ const getCSVData = async (currentChart) => {
   switch (currentChart) {
     case '1m':
       filteredSeriesData = filterSeriesData(seriesData, 1);
-      console.log('1m filteredSeriesData', filteredSeriesData)
       break;
     case '6m':
       filteredSeriesData = filterSeriesData(seriesData, 6);
-      console.log('6m filteredSeriesData', filteredSeriesData)
       break;
     case 'ytd':
       filteredSeriesData = filterSeriesData(seriesData, 'ytd');
-      console.log('ytd filteredSeriesData', filteredSeriesData);
       break;
     case '1y':
       filteredSeriesData = filterSeriesData(seriesData, 12);
-      console.log('1y filteredSeriesData', filteredSeriesData)
       break;
     default:
       break;
@@ -67,60 +60,14 @@ const getCSVData = async (currentChart) => {
     data: createSeries(filteredSeriesData, 9, i, 'MMM YYYY')
   }));
 
-  console.log('seriesObjs', seriesObjs)
-
-
-  let dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
-  console.log('dates', dates)
-  const ORIGINAL_DATES_LENGTH = dates.length;
-  // const MILLISECONDS_IN_MONTH = 2592000000;
-  // const MILLISECONDS_IN_6_MONTHS = 15552000000;
-  // const MILLISECONDS_IN_YEAR = 31556952000;
-  // const currentDate = (new Date()).getTime();
-
-  // const currentChartFilter = (dates, range) => {
-  //   // need full dates back for this to work
-  //   const furthestLimit = currentDate - range;
-
-  //   return dates.filter((date, i) => {
-
-  //     const ms = (new Date(date)).getTime();
-  //     return ms < currentDate && ms > furthestLimit;
-  //   });
-  // }
-
-  // // filter dates array
-  // switch (currentChart) {
-  //   case '1m':
-  //     dates = currentChartFilter(dates, MILLISECONDS_IN_MONTH);
-  //     break;
-  //   case '6m':
-  //     dates = currentChartFilter(dates, MILLISECONDS_IN_6_MONTHS);
-  //     break;
-  //   case 'ytd':
-  //     const currentYear = dates[dates.length - 1].slice(-5);
-  //     dates = dates.filter(date => date.includes(currentYear));
-  //     break;
-  //   case '1y':
-  //     dates = currentChartFilter(dates, MILLISECONDS_IN_YEAR);
-  //     break;
-  //   default:
-  //     break;
-  // }
-
-  // // filter series data array based on number of dates
-  let series;
-  if (dates.length < ORIGINAL_DATES_LENGTH) {
-    series = seriesObjs.map(obj => ({
-      name: obj.name,
-      data: obj.data.slice(-dates.length).map(dataObj => dataObj.revenue)
-    }));
-  } else {
-    series = seriesObjs.map(obj => ({
-      name: obj.name,
-      data: obj.data.map(dataObj => dataObj.revenue)
-    }));
-  }
+  // grab dates from first series object bin names
+  const dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
+  // format series objectes for Highcharts.js
+  const series = seriesObjs.map(obj => ({
+    name: obj.name,
+    // create array of revenue numbers for date bins
+    data: obj.data.map(dataObj => dataObj.revenue)
+  }));
 
   return ({
     series,
