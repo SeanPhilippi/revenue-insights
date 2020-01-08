@@ -16,7 +16,6 @@ class Provider extends PureComponent {
     }
   }) => {
     this.setState({ currentChart: value });
-    // refetch data, call fetchCSV with new currentChart value
     const newCsvData = await fetchCSV(value, this.state.dateFormat.name);
     this.setState({ data: newCsvData });
   }

@@ -18,7 +18,6 @@ const RevenueChart = () => (
     {
       ({ data, currentChart, dateFormat }) => {
         if (!data) return <Loading />
-        console.log('data', data)
         return (
           <div className="chart-container">
             <ChartSelect />

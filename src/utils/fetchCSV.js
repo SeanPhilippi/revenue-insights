@@ -18,10 +18,8 @@ const getCSVData = async (currentChart, dateFormat) => {
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
   const seriesNames = parsedData[0].slice(0, 9);
-  // array of arrays of data rows from parsed csv
   const seriesData = parsedData.slice(1, parsedData.length - 1);
 
-  // filter seriesData to go into createSeries
   const filterSeriesData = (seriesData, numOfMonths) => {
     const currentDate = moment();
     const furthestDateBack = moment().subtract(numOfMonths, 'months');
@@ -60,12 +58,9 @@ const getCSVData = async (currentChart, dateFormat) => {
     data: createSeries(filteredSeriesData, 9, i, dateFormat)
   }));
 
-  // grab dates from first series object bin names
   const dates = seriesObjs[0].data.map(dataObj => dataObj.bin);
-  // format series objectes for Highcharts.js
   const series = seriesObjs.map(obj => ({
     name: obj.name,
-    // create array of revenue numbers for date bins
     data: obj.data.map(dataObj => dataObj.revenue)
   }));
 
@@ -76,23 +71,15 @@ const getCSVData = async (currentChart, dateFormat) => {
 }
 
 const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
-  // chain allows you to chain lodash array methods on a returned collection so you don't have to
-  // pass the collection to each lodash method on a seprate line
   const groupedData = _.chain(data)
-    // groupBy can take a callback to be executed on each item, the return values serve as
-    // the keys the items will be grouped in arrays and assigned to
     .groupBy(row => {
-      // each row is a data array from the parsed csv
-      // grab the date with format YYYY-MM-DD and reformat into given dateFormat
       return moment(row[dateColIdx].split(' ')[0], 'YYYY-MM-DD').format(dateFormat)})
-    // map over the groupBy object, each group is a data array and each bin is a groupBy date key
     .map((group, bin) => {
-      // reduce the right number at the right index of each data array row into a single sum
       const revenueSum = _.sum(group.map(row => Number(row[valueColIdx])));
       return {
         bin,
         revenue: revenueSum
-      } // return the unwrapped lodash chain value
+      }
     }).value();
   return groupedData;
 }
