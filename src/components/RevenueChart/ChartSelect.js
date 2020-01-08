@@ -12,10 +12,11 @@ const ChartSelect = () => {
               Date Range
             </label>
             <div className="d-flex justify-content-between mb-2">
-              {chartOptions.map(option => (
+              {chartOptions.map((option, i) => (
                   <button
+                    key={ `${option}-${i}` }
                     value={ option.toLowerCase() }
-                    className={ option.toLowerCase() === currentChart && 'active-chart'}
+                    className={ option.toLowerCase() === currentChart ? 'active-chart' : '' }
                     onClick={ handleChartSelect }
                   >
                     { option }

@@ -29,11 +29,12 @@ const DateFormatSelect = () => {
               Summarize By
             </label>
             <div className="d-flex justify-content-center mb-2">
-              {dateFormats.map(format => (
+              {dateFormats.map((format, i) => (
                   <button
+                    key={ `${format}-${i}` }
                     name={ format.name }
                     value={ format.value }
-                    className={ format.value === dateFormat.value && 'active-chart'}
+                    className={ format.value === dateFormat.value ? 'active-chart' : '' }
                     onClick={ handleDateFormat }
                   >
                     { format.value }
