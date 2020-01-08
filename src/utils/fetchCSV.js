@@ -13,7 +13,7 @@ const fetchCSV = () => {
     });
 }
 
-const getCSVData = async (currentChart) => {
+const getCSVData = async (currentChart, dateFormat) => {
   const csvData = await fetchCSV();
   const parsedCsv = Papa.parse(csvData);
   const parsedData = parsedCsv.data;
@@ -57,7 +57,7 @@ const getCSVData = async (currentChart) => {
 
   const seriesObjs = seriesNames.map((name, i) => ({
     name,
-    data: createSeries(filteredSeriesData, 9, i, 'MMM YYYY')
+    data: createSeries(filteredSeriesData, 9, i, dateFormat)
   }));
 
   // grab dates from first series object bin names
@@ -97,6 +97,6 @@ const createSeries = (data, dateColIdx, valueColIdx, dateFormat) => {
   return groupedData;
 }
 
-export default function(currentChart) {
-  return getCSVData(currentChart);
+export default function(currentChart, dateFormat) {
+  return getCSVData(currentChart, dateFormat);
 }

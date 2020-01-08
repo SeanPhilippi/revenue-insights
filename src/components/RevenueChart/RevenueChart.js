@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppContext } from '../Provider';
 import ChartSelect from './ChartSelect';
+import DateFormatSelect from './DateFormatSelect';
 import Loading from '../Loading';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -15,15 +16,16 @@ Highcharts.setOptions(revenueChartTheme);
 const RevenueChart = () => (
   <AppContext.Consumer>
     {
-      ({ data, currentChart }) => {
+      ({ data, currentChart, dateFormat }) => {
         if (!data) return <Loading />
         console.log('data', data)
         return (
           <div className="revenue-chart">
             <ChartSelect />
+            <DateFormatSelect />
             <HighchartsReact
               highcharts={ Highcharts }
-              options={ revenueChartConfig(data, currentChart) }
+              options={ revenueChartConfig(data, currentChart, dateFormat) }
             />
           </div>
         )

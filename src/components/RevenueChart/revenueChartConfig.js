@@ -1,4 +1,5 @@
-export default function(data, currentChart) {
+export default function(data, currentChart, dateFormat) {
+  const formatValue = dateFormat.value;
   return {
     chart: {
       type: 'column',
@@ -28,7 +29,7 @@ export default function(data, currentChart) {
     },
     title: {
       align: 'left',
-      text: 'Revenue Per Service By Month'
+      text: `Revenue Per Service By ${ formatValue.charAt(0).toUpperCase() + formatValue.slice(1, formatValue.length - 1) }`
     },
     subtitle: {
       text: 'Click and drag to zoom in. Hold down shift key while dragging to pan.'
