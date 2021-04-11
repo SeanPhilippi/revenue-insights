@@ -13,25 +13,30 @@ import './RevenueChart.css';
 highchartsExporting(Highcharts);
 Highcharts.setOptions(revenueChartTheme);
 
-const RevenueChart = () => (
-  <AppContext.Consumer>
-    {
-      ({ data, currentChart, dateFormat }) => {
-        if (!data) return <Loading />
-        return (
-          <div className="chart-container">
-            <ChartSelect />
-            <DateFormatSelect />
-            <HighchartsReact
-              highcharts={ Highcharts }
-              options={ revenueChartConfig(data, currentChart, dateFormat) }
-            />
-          </div>
-        )
+const RevenueChart = () => {
+  return (
+    <AppContext.Consumer>
+      {
+        ({ data, currentChart, dateFormat }) => {
+          if (!data) return <Loading />
+          return (
+            <div className='chart-container'>
+              <div className='settings'>
+                <ChartSelect />
+                <DateFormatSelect />
+              </div>
+              <div>
+                <HighchartsReact
+                  highcharts={ Highcharts }
+                  options={ revenueChartConfig(data, currentChart, dateFormat) }
+                />
+              </div>
+            </div>
+          )
+        }
       }
-    }
-  </AppContext.Consumer>
-);
-
+    </AppContext.Consumer>
+  )
+};
 
 export default RevenueChart;

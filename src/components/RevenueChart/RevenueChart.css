@@ -1,6 +1,22 @@
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 .chart-container {
   width: 80%;
+  height: 80%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .chart-select {

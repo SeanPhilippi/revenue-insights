@@ -21,7 +21,7 @@ export default function(data, currentChart, dateFormat) {
         }
       },
       panning: true,
-      panKey: 'shift'
+      panKey: 'shift',
     },
     navigation: {
       buttonOptions: {

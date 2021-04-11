@@ -7,11 +7,11 @@ const ChartSelect = () => {
     <AppContext.Consumer>
       {
         ({ handleChartSelect, currentChart }) => (
-          <div className="chart-select">
-            <label className="text-white">
+          <div className='chart-select'>
+            <label className='text-white'>
               Date Range
             </label>
-            <div className="d-flex justify-content-between mb-2">
+            <div className='d-flex justify-content-between mb-2'>
               {chartOptions.map((option, i) => (
                   <button
                     key={ `${option}-${i}` }
