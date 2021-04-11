@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "highcharts": "^8.0.0",
     "highcharts-react-official": "^2.2.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "papaparse": "^5.1.1",
     "react": "^16.12.0",
